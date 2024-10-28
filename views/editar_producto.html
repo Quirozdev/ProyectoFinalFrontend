@@ -1,0 +1,11 @@
+{% extends "base.html" %} 
+
+{% block title %}Editar Producto: {{ producto.nombre }}{% endblock %}
+
+{% block styles %} 
+    <link rel="stylesheet" href="/styles/editar_producto.css">
+{% endblock %}
+
+{% block body %}
+    <p>Editando el producto con ID: {{ producto.id }}</p>
+{% endblock %}

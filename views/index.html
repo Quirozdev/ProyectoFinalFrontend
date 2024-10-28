@@ -1,0 +1,43 @@
+{% extends "base.html" %} 
+
+{% block title %}Productos{% endblock %}
+
+{% block styles %} 
+    <link rel="stylesheet" href="/styles/index.css">
+{% endblock %}
+
+{% block body %}
+    <!--
+        Esta parte es para crear un contenedor oculto que contiene informacion sobre
+        mensajes de los toasts, como cuando se agrega, edita o borra un producto.
+        Los atributos que tiene de data son obtenidos por JavaScript, por eso
+        es importante que no se borre esta parte de este if    
+    -->
+    {% if mensaje and tipo_mensaje %}
+        <p id="contenedor-informacion-toast" style="display: none;" data-tipo-mensaje="{{ tipo_mensaje }}" data-mensaje="{{ mensaje }}"></p>
+    {% endif %}
+
+    <!-- Si hay productos, mostrarlos -->
+    {% if productos.length > 0 %}
+    {% for producto in productos %}
+        <a href="/productos/{{ producto.id }}">
+            <p>ID: {{ producto.id }}</p>
+            <p>{{ producto.nombre }}</p>
+            <p>Categoria: {{ producto.nombre_categoria }}</p>
+            <p>Precio: ${{ producto.precio_unitario }}</p>
+            <p>Stock: {{ producto.cantidad_en_stock }}</p>
+            <img src="{{ producto.url_imagen }}" alt="{{ producto.nombre }}" />
+        </a>
+    {% endfor %}
+    <!-- Si no hay productos -->
+    {% else %}
+        <p>No hay productos por mostrar!</p>
+        <a class="button" href="/productos/agregar">
+            Agregar productos
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block javascript %}
+<script src="/javascript/toasts.js"></script>
+{% endblock %}

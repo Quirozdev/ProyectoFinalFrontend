@@ -1,0 +1,21 @@
+button {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+svg {
+  width: 30px;
+  height: 30px;
+}
+
+.contenedor-contenido {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contendor-botones-modal {
+  display: flex;
+  gap: 1rem;
+}
