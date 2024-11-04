@@ -1,6 +1,7 @@
 const multer = require("multer");
 const path = require("path");
 const { v4: uuidv4 } = require("uuid");
+const fs = require("fs/promises");
 
 // Configuracion del almacenamiento de imagenes
 const storage = multer.diskStorage({
@@ -19,4 +20,10 @@ const upload = multer({
   },
 });
 
-module.exports = upload;
+async function deleteImage(urlImagen) {
+  // remueve el archivo de la imagen desde la carpeta public,
+  // porque la imagen en su url ya viene con el prefix de la carpeta desde /images/productos/
+  return await fs.unlink(path.join(__dirname, "../", "public", urlImagen));
+}
+
+module.exports = { upload, deleteImage };

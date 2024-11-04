@@ -23,7 +23,7 @@
         <a href="/productos/{{ producto.id }}">
             <p>ID: {{ producto.id }}</p>
             <p>{{ producto.nombre }}</p>
-            <p>Categoria: {{ producto.nombre_categoria }}</p>
+            <p>Categoria: {{ producto.categoria.nombre }}</p>
             <p>Precio: ${{ producto.precio_unitario }}</p>
             <p>Stock: {{ producto.cantidad_en_stock }}</p>
             <img src="{{ producto.url_imagen }}" alt="{{ producto.nombre }}" />

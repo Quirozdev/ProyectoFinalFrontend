@@ -4,11 +4,13 @@ const contenedorInformacionToast = document.getElementById(
 );
 
 if (contenedorInformacionToast) {
+  // tomar los datos de ese elemento de html
   const tipo_mensaje = contenedorInformacionToast
     .getAttribute("data-tipo-mensaje")
     .toLowerCase();
   const mensaje = contenedorInformacionToast.getAttribute("data-mensaje");
 
+  // dependiendo del tipo, el color de toast es uno u otro
   const colorFondo =
     tipo_mensaje === "borrado"
       ? "#dc2626"
@@ -16,6 +18,7 @@ if (contenedorInformacionToast) {
       ? "#ca8a04"
       : "#16a34a";
 
+  // para crear el toast con su configuracion
   const notyf = new Notyf({
     duration: 5000,
     position: {

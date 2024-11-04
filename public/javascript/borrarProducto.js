@@ -23,12 +23,8 @@ botonBorrarConfirmacion.addEventListener("click", (e) => {
   fetch(`/productos/${id}`, {
     method: "DELETE",
   }).then(() => {
-    const tipoMensaje = "Borrado";
-    const mensaje = "Producto borrado exitosamente";
-    // para redireccionar con query params que van a ser usados para mostrar un toast en esa pagina
-    window.location.assign(
-      encodeURI(`/productos/?mensaje=${mensaje}&tipo_mensaje=${tipoMensaje}`)
-    );
+    // para redireccionar
+    window.location.assign(encodeURI(`/productos/`));
   });
 });
 

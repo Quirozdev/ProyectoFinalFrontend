@@ -5,6 +5,18 @@ main {
   align-items: center;
 }
 
+#imagen_seleccionada {
+  /*
+    por defecto no se muestra por que no se ha seleccionada ninguna,
+    cuando se selecciona alguna, con JavaScript se muestra
+  */
+  display: none;
+  width: 100%;
+  max-width: 300px;
+  max-height: 300px;
+  object-fit: cover;
+}
+
 /* para ocultar las flechas en los input de tipo number */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

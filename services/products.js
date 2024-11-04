@@ -1,42 +1,37 @@
-const { categorias, productos } = require("../data.js");
-const { v4: uuidv4 } = require("uuid");
+const Producto = require("../models/product.js");
+const { deleteImage } = require("./images.js");
 
-// simulando operaciones de una base de datos en memoria
-
-function encontrarProductoPorId(id) {
-  return productos.find((producto) => {
-    return producto.id === id;
-  });
+async function encontrarProductoPorId(id) {
+  const producto = await Producto.findById(id).populate("categoria");
+  return producto;
 }
 
-function encontrarCategoriaPorId(id) {
-  return categorias.find((categoria) => {
-    return categoria.id === id;
-  });
+async function obtenerProductos() {
+  const productosConCategoria = await Producto.find().populate("categoria");
+  return productosConCategoria;
 }
 
-function agregarProducto(
+async function agregarProducto(
   nombre,
   id_categoria,
   precio,
   cantidad_en_stock,
   url_imagen
 ) {
-  // generando una id para el nuevo producto que sea unica
-  // no vamos a usar ids autoincrementales, para usar este generador de identificadores tambien con la imagen
-  const id = uuidv4();
-  productos.push({
-    id,
-    nombre,
-    id_categoria,
+  const productoAInsertar = new Producto({
+    nombre: nombre,
     precio_unitario: precio,
-    cantidad_en_stock,
-    url_imagen,
+    cantidad_en_stock: cantidad_en_stock,
+    url_imagen: url_imagen,
+    categoria: {
+      _id: id_categoria,
+    },
   });
-  return id;
+  const productoInsertado = await productoAInsertar.save();
+  return productoInsertado;
 }
 
-function actualizarProducto({
+async function actualizarProducto({
   id_producto,
   nombre,
   id_categoria,
@@ -44,38 +39,30 @@ function actualizarProducto({
   cantidad_en_stock,
   url_imagen,
 }) {
-  const index = productos.findIndex((producto) => {
-    return (producto.id = id_producto);
-  });
-
-  // checando cada campo opcional que se haya pasado para actualizarlo
-  if (nombre) {
-    productos[index].nombre = nombre;
-  }
-  if (id_categoria) {
-    productos[index].id_categoria = id_categoria;
-  }
-  if (precio) {
-    productos[index].precio = precio;
-  }
-  if (cantidad_en_stock) {
-    productos[index].cantidad_en_stock = cantidad_en_stock;
-  }
-  if (url_imagen) {
-    productos[index].url_imagen = url_imagen;
-  }
+  const producto = await Producto.findByIdAndUpdate(
+    id_producto,
+    {
+      nombre: nombre,
+      precio_unitario: precio,
+      cantidad_en_stock: cantidad_en_stock,
+      url_imagen: url_imagen,
+      id_categoria: id_categoria,
+    },
+    { new: true }
+  );
+  return producto;
 }
 
-function borrarProducto(id) {
-  const index = productos.findIndex((producto) => {
-    return producto.id == id;
-  });
-  productos.splice(index, 1);
+async function borrarProducto(id) {
+  const productoBorrado = await Producto.findByIdAndDelete(id);
+  // borrar la imagen asociada al producto
+  await deleteImage(productoBorrado.url_imagen);
+  return productoBorrado;
 }
 
 module.exports = {
+  obtenerProductos,
   encontrarProductoPorId,
-  encontrarCategoriaPorId,
   agregarProducto,
   actualizarProducto,
   borrarProducto,
