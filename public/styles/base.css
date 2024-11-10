@@ -1,14 +1,37 @@
-body {
-  min-height: 100vh;
+
+/* Asegura que el contenido principal ocupe toda la altura de la ventana */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
 }
 
-header,
-footer {
-  padding: 1.2rem 2rem;
-}
-
+/* Configura el espacio para el contenido principal */
 main {
   flex: 1;
+}
+
+/* Estiliza el footer para que esté siempre al final */
+footer {
+  text-align: center;
+}
+
+/* Tema Claro */
+[data-theme="light"] {
+  --background-color: #ffffff;
+  --text-color: #333333;
+}
+
+/* Tema Oscuro */
+[data-theme="dark"] {
+  --background-color: #222222;
+  --text-color: #ffffff;
+}
+
+/* Aplicación de colores de fondo y texto */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
 }

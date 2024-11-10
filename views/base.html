@@ -1,31 +1,42 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{% block title %}{% endblock %}</title>
-    <!-- Importando el framework de Bulma -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
-    />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
-    <link
-      rel="stylesheet"
-      href="/styles/base.css"
-    />
+    
+    <!-- Importando Bulma y Notyf -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css" />
+    
+    <!-- Iconos de FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
+    <!-- Estilos personalizados -->
+    <link rel="stylesheet" href="/styles/base.css" />
     {% block styles %} {% endblock %}
   </head>
   <body>
-    <header class="has-background-primary-20">
-        <a href="/">
+    <!-- Header con espaciado y colores mejorados -->
+    <header class="has-background-primary p-4">
+        <a href="/" class="has-text-white">
             <h1 class="title">Productos Abarrotes</h1>
         </a>
     </header>
-    <main>
+    
+    <!-- Cuerpo principal -->
+    <main class="section">
         {% block body %} {% endblock %}
     </main>
-    <footer class="has-background-primary-20">hola soy el footer</footer>
+    
+    <!-- Footer con mensaje informativo -->
+    <footer class="has-background-primary p-4">
+        <p class="has-text-white has-text-centered">
+            © 2023 Productos Abarrotes. Todos los derechos reservados.
+        </p>
+    </footer>
+    
+    <!-- Scripts de Notyf y bloque de JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
     {% block javascript %} {% endblock %}
   </body>

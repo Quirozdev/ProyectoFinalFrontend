@@ -17,24 +17,31 @@
         <p id="contenedor-informacion-toast" style="display: none;" data-tipo-mensaje="{{ tipo_mensaje }}" data-mensaje="{{ mensaje }}"></p>
     {% endif %}
 
-    <!-- Si hay productos, mostrarlos -->
+    <!-- Botón siempre visible para agregar productos -->
+    <div class="add-product-button">
+        <a class="button is-primary" href="/productos/agregar">Agregar productos</a>
+    </div>
+
+    <!-- Mostrar productos si existen -->
     {% if productos.length > 0 %}
-    {% for producto in productos %}
-        <a href="/productos/{{ producto.id }}">
-            <p>ID: {{ producto.id }}</p>
-            <p>{{ producto.nombre }}</p>
-            <p>Categoria: {{ producto.categoria.nombre }}</p>
-            <p>Precio: ${{ producto.precio_unitario }}</p>
-            <p>Stock: {{ producto.cantidad_en_stock }}</p>
-            <img src="{{ producto.url_imagen }}" alt="{{ producto.nombre }}" />
-        </a>
-    {% endfor %}
-    <!-- Si no hay productos -->
+    <div class="productos-grid">
+        {% for producto in productos %}
+            <div class="producto-card">
+                <a href="/productos/{{ producto.id }}">
+                    <img src="{{ producto.url_imagen }}" alt="{{ producto.nombre }}" />
+                    <p><strong>{{ producto.nombre }}</strong></p>
+                    <p>Categoría: {{ producto.categoria.nombre }}</p>
+                    <p>Precio: ${{ producto.precio_unitario }}</p>
+                    <p>Stock: {{ producto.cantidad_en_stock }} unidades</p>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
     {% else %}
-        <p>No hay productos por mostrar!</p>
-        <a class="button" href="/productos/agregar">
-            Agregar productos
-        </a>
+        <!-- Mensaje si no hay productos -->
+        <div class="no-productos">
+            <p>No hay productos por mostrar!</p>
+        </div>
     {% endif %}
 {% endblock %}
 
