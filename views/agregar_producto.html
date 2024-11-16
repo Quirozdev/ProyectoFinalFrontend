@@ -1,132 +1,119 @@
 {% extends "base.html" %}
 
-{% block title %}Editar Producto: {{ producto.nombre }}{% endblock %}
+{% block title %}Agregar Producto{% endblock %}
 
-{% block styles %}
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@3.0.0/dist/tailwind.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+{% block styles %} 
+    <link rel="stylesheet" href="/styles/agregar_producto.css">
+    <!-- Bootstrap Styles -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 {% endblock %}
 
 {% block body %}
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8 d-flex flex-column bg-white p-6 rounded-lg shadow-lg">
-            <div class="d-flex justify-content-between mb-5">
-                <div class="col-md-4">
-                    <!-- Imagen del producto -->
-                    <img src="{{ producto.url_imagen }}" alt="{{ producto.nombre }}" class="img-fluid rounded-lg shadow-lg transition-transform duration-300 hover:scale-105" />
+    <div class="container py-8">
+        <form class="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg border border-gray-200" action="/productos/agregar" method="post" enctype="multipart/form-data">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Agregar Producto</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Nombre -->
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2" for="nombre">Nombre del Producto</label>
+                    <input class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Ej. Sabritas" id="nombre" name="nombre" required />
                 </div>
-                <div class="col-md-8 ms-4">
-                    <!-- Detalles del producto -->
-                    <div class="fs-5 mb-3">
-                        <strong>ID:</strong> {{ producto.id }}
-                    </div>
-                    <div class="fs-5 mb-3">
-                        <strong>Nombre:</strong> 
-                        <input type="text" id="nombre" value="{{ producto.nombre }}" class="form-control border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    
-                    <!-- Categoría del producto -->
-                    <div class="mb-3">
-                        <label class="block text-gray-700 font-medium mb-2" for="categoria">Categoría</label>
-                        <select id="categoria" name="categoria" class="w-full p-4 border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
-                            <option value="" disabled>Selecciona una categoría</option>
-                            {% for categoria in categorias %}
-                                <option value="{{ categoria.id }}" {% if categoria.id == producto.categoria_id %}selected{% endif %}>{{ categoria.nombre }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    
-                    <div class="fs-5 mb-3">
-                        <strong>Precio:</strong> 
-                        <input type="number" id="precio_unitario" value="{{ producto.precio_unitario }}" class="form-control border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div class="fs-5 mb-3">
-                        <strong>Stock:</strong> 
-                        <input type="number" id="cantidad_en_stock" value="{{ producto.cantidad_en_stock }}" class="form-control border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    
-                    <!-- Cargar imagen del producto -->
-                    <div class="mt-6">
-                        <label class="block text-gray-700 font-medium mb-2" for="imagen_producto">Imagen del Producto</label>
-                        <div id="image-upload-container" class="flex flex-col items-center justify-center bg-gray-50 p-4 rounded-lg border-dashed border-2 border-gray-300 max-w-xs mx-auto">
-                            <!-- Input para cargar la imagen -->
-                            <label id="upload-label" class="cursor-pointer text-center text-blue-500 hover:text-blue-600 transition-all duration-300">
-                                <input class="file-input hidden" type="file" name="imagen_producto" id="imagen_producto" accept="image/*" required />
-                                <i class="fas fa-upload text-3xl mb-2"></i>
-                                <span class="block">Selecciona una imagen</span>
-                            </label>
 
-                            <!-- Imagen seleccionada -->
-                            <img id="imagen_seleccionada" class="hidden mt-4 max-w-full h-auto" alt="Imagen seleccionada" />
+                <!-- Categoría -->
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2" for="categoria">Categoría</label>
+                    <select id="categoria" name="categoria" class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                        <option value="" selected disabled>Selecciona una categoría</option>
+                        {% for categoria in categorias %}
+                            <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
 
-                            <!-- Botón para eliminar imagen -->
-                            <button id="remove-image-btn" type="button" class="hidden mt-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600">
-                                Eliminar Imagen
-                            </button>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <!-- Precio -->
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2" for="precio">Precio Unitario</label>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-gray-500">$</span>
+                        <input class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" type="number" placeholder="16.00" id="precio" name="precio" step=".01" required />
+                        <span class="text-gray-500">MXN</span>
                     </div>
+                </div>
 
-                    <!-- Botón de Envío -->
-                    <div class="mt-8 flex justify-center">
-                        <button type="submit" class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
-                            <i class="bi bi-pencil-square"></i> Guardar Cambios
-                        </button>
+                <!-- Cantidad en stock -->
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2" for="cantidad_en_stock">Cantidad en Stock</label>
+                    <div class="flex items-center space-x-2">
+                        <input class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" type="number" placeholder="8" id="cantidad_en_stock" name="cantidad_en_stock" required />
+                        <span class="text-gray-500">unidades</span>
                     </div>
                 </div>
             </div>
-        </div>
+
+    <!-- Imagen -->
+<div class="mt-6">
+    <label class="block text-gray-700 font-medium mb-2" for="imagen_producto">Imagen del Producto</label>
+    <div class="flex flex-col items-center bg-gray-100 p-4 rounded-md" style="max-width: 300px; margin: auto;">
+        <label class="cursor-pointer">
+            <input class="file-input hidden" type="file" name="imagen_producto" id="imagen_producto" accept="image/*" required />
+            <div id="mensaje_selecciona" class="text-center text-indigo-500 hover:text-indigo-600 transition-all duration-300">
+                <i class="fas fa-upload text-2xl mb-2"></i>
+                <span class="block">Selecciona una imagen</span>
+            </div>
+        </label>
+        <img src="" alt="Imagen seleccionada" id="imagen_seleccionada" class="mt-4 max-w-full h-auto hidden rounded-md shadow-md" style="max-height: 200px; object-fit: contain;" />
+        <button id="eliminar_imagen" type="button" class="btn btn-danger mt-4 hidden">
+            Eliminar imagen
+        </button>
     </div>
 </div>
+            <!-- Botón de Envío -->
+            <div class="mt-6 flex justify-center">
+                <button type="submit" class="btn btn-primary px-6 py-3 rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    Agregar Producto
+                </button>
+            </div>
+        </form>
+    </div>
 {% endblock %}
 
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/editarproducto.js') }}"></script>
-
+{% block javascript %}
 <script>
-// Referencias a los elementos
-const inputFile = document.getElementById('imagen_producto');
-const uploadLabel = document.getElementById('upload-label');
-const imagenSeleccionada = document.getElementById('imagen_seleccionada');
-const removeImageBtn = document.getElementById('remove-image-btn');
+    document.addEventListener("DOMContentLoaded", () => {
+        const inputImagen = document.getElementById("imagen_producto");
+        const imagenSeleccionada = document.getElementById("imagen_seleccionada");
+        const mensajeSelecciona = document.getElementById("mensaje_selecciona");
+        const botonEliminar = document.getElementById("eliminar_imagen");
 
-// Escuchar el cambio en el input de tipo file
-inputFile.addEventListener('change', (event) => {
-    const file = event.target.files[0];
+        inputImagen.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Mostrar la imagen seleccionada
+                    imagenSeleccionada.src = e.target.result;
+                    imagenSeleccionada.classList.remove("hidden");
+                    mensajeSelecciona.style.display = "none";
+                    botonEliminar.classList.remove("hidden");
+                };
+                reader.readAsDataURL(file); // Leer el archivo seleccionado
+            }
+        });
 
-    if (file) {
-        // Crear una URL para la imagen seleccionada
-        const imageURL = URL.createObjectURL(file);
-
-        // Mostrar la imagen seleccionada
-        imagenSeleccionada.src = imageURL;
-        imagenSeleccionada.classList.remove('hidden');
-
-        // Ocultar el texto de "Selecciona una imagen"
-        uploadLabel.classList.add('hidden');
-
-        // Mostrar el botón de eliminar
-        removeImageBtn.classList.remove('hidden');
-    }
-});
-
-// Eliminar la imagen seleccionada
-removeImageBtn.addEventListener('click', () => {
-    // Resetear el input file
-    inputFile.value = '';
-
-    // Ocultar la imagen seleccionada
-    imagenSeleccionada.src = '';
-    imagenSeleccionada.classList.add('hidden');
-
-    // Mostrar nuevamente el texto de "Selecciona una imagen"
-    uploadLabel.classList.remove('hidden');
-
-    // Ocultar el botón de eliminar
-    removeImageBtn.classList.add('hidden');
-});
+        botonEliminar.addEventListener("click", () => {
+            // Restablecer la imagen y ocultar elementos relacionados
+            inputImagen.value = "";
+            imagenSeleccionada.src = "";
+            imagenSeleccionada.classList.add("hidden");
+            mensajeSelecciona.style.display = "block";
+            botonEliminar.classList.add("hidden");
+        });
+    });
 </script>
-<!-- Bootstrap JS -->
+<!-- Bootstrap JS (necesario para algunos componentes como popper.js) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
