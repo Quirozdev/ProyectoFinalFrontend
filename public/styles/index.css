@@ -1,0 +1,35 @@
+/* Estilos para una cuadrícula de productos */
+.productos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+.producto-card {
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    transition: box-shadow 0.3s ease;
+}
+.producto-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.producto-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+.producto-card p {
+    margin: 8px 0;
+    font-size: 0.9em;
+}
+.producto-card a {
+    color: #3273dc;
+    text-decoration: none;
+}
+.add-product-button {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}

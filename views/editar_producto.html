@@ -1,11 +1,113 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 
 {% block title %}Editar Producto: {{ producto.nombre }}{% endblock %}
 
-{% block styles %} 
-    <link rel="stylesheet" href="/styles/editar_producto.css">
+{% block body %}
+<div class="container py-5">
+    <form class="row justify-content-center" action="/productos/{{ producto.id }}/editar" method="post" enctype="multipart/form-data">
+        <div class="col-md-8 d-flex flex-column bg-white p-6 rounded-lg shadow-lg">
+            <div class="d-flex justify-content-between mb-5 px-4">
+                <div class="col-md-4">
+                    <!-- Imagen del producto -->
+                    <img src="{{ producto.url_imagen }}" alt="{{ producto.nombre }}" class="img-fluid rounded-lg shadow-lg transition-transform duration-300 hover:scale-105" />
+                </div>
+                <div class="col-md-8 ms-4">
+                    <!-- Detalles del producto -->
+                    <div class="fs-5 mb-3">
+                        <strong>ID:</strong> {{ producto.id }}
+                    </div>
+                    <div class="fs-5 mb-3">
+                        <strong>Nombre:</strong> 
+                        <input type="text" name="nombre" id="nombre" value="{{ producto.nombre }}" class="form-control border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    </div>
+                    
+                    <!-- Categoría del producto -->
+                    <div class="mb-3">
+                        <label class="block text-gray-700 font-medium mb-2" for="categoria">Categoría</label>
+                        <select id="categoria" name="categoria" class="w-full p-4 border-2 border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                            <option value="" disabled>Selecciona una categoría</option>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}" {% if categoria.id == producto.categoria.id %}selected{% endif %}>{{ categoria.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="fs-5 mb-3">
+                        <strong>Precio:</strong> 
+                        <input type="number" name="precio" id="precio" value="{{ producto.precio_unitario }}" class="form-control border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" step=".01" required>
+                    </div>
+                    <div class="fs-5 mb-3">
+                        <strong>Stock:</strong> 
+                        <input type="number" name="cantidad_en_stock" id="cantidad_en_stock" value="{{ producto.cantidad_en_stock }}" class="form-control border-2 border-gray-300 p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                    </div>
+                    
+                    <!-- Cargar imagen del producto -->
+                    <div class="mt-6">
+                        <label class="block text-gray-700 font-medium mb-2" for="imagen_producto">Imagen del Producto</label>
+                        <div id="image-upload-container" class="flex flex-col items-center justify-center bg-gray-50 p-4 rounded-lg border-dashed border-2 border-gray-300 max-w-xs mx-auto">
+                            <!-- Input para cargar la imagen -->
+                            <label id="upload-label" class="cursor-pointer text-center text-blue-500 hover:text-blue-600 transition-all duration-300">
+                                <input class="file-input hidden" type="file" name="imagen_producto" id="imagen_producto" accept="image/*" />
+                                <div id="mensaje_selecciona" class="text-center text-indigo-500 hover:text-indigo-600 transition-all duration-300">
+                                    <i class="fas fa-upload text-2xl mb-2"></i>
+                                    <span class="block">Selecciona una imagen</span>
+                                </div>
+                            </label>
+
+                            <!-- Imagen seleccionada -->
+                            <img id="imagen_seleccionada" class="hidden mt-4 max-w-full h-auto" alt="Imagen seleccionada" />
+
+                            <!-- Botón para eliminar imagen -->
+                            <button id="eliminar_imagen" type="button" class="hidden mt-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow hover:bg-red-600">
+                                Eliminar Imagen
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Botón de Envío -->
+                    <div class="mt-8 flex justify-center">
+                        <button type="submit" class="bg-blue-500 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                            <i class="bi bi-pencil-square"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
 {% endblock %}
 
-{% block body %}
-    <p>Editando el producto con ID: {{ producto.id }}</p>
+{% block javascript %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const inputImagen = document.getElementById("imagen_producto");
+        const imagenSeleccionada = document.getElementById("imagen_seleccionada");
+        const mensajeSelecciona = document.getElementById("mensaje_selecciona");
+        const botonEliminar = document.getElementById("eliminar_imagen");
+
+        inputImagen.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Mostrar la imagen seleccionada
+                    imagenSeleccionada.src = e.target.result;
+                    imagenSeleccionada.classList.remove("hidden");
+                    mensajeSelecciona.style.display = "none";
+                    botonEliminar.classList.remove("hidden");
+                };
+                reader.readAsDataURL(file); // Leer el archivo seleccionado
+            }
+        });
+
+        botonEliminar.addEventListener("click", () => {
+            // Restablecer la imagen y ocultar elementos relacionados
+            inputImagen.value = "";
+            imagenSeleccionada.src = "";
+            imagenSeleccionada.classList.add("hidden");
+            mensajeSelecciona.style.display = "block";
+            botonEliminar.classList.add("hidden");
+        });
+    });
+</script>
 {% endblock %}

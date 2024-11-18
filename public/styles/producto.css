@@ -1,21 +1,25 @@
-button {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+/* Estilos personalizados */
+img {
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-svg {
-  width: 30px;
-  height: 30px;
+.btn-warning {
+  background-color: #FFB74D;
+  border-color: #FFB74D;
 }
 
-.contenedor-contenido {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.btn-warning:hover {
+  background-color: #FB8C00;
+  border-color: #FB8C00;
 }
 
-.contendor-botones-modal {
-  display: flex;
-  gap: 1rem;
+.btn-danger {
+  background-color: #E57373;
+  border-color: #E57373;
+}
+
+.btn-danger:hover {
+  background-color: #D32F2F;
+  border-color: #D32F2F;
 }

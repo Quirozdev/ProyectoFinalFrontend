@@ -1,4 +1,4 @@
-{% extends "base.html" %} 
+{% extends "base.html" %}
 
 {% block title %}Agregar Producto{% endblock %}
 
@@ -7,20 +7,21 @@
 {% endblock %}
 
 {% block body %}
-    <form class="box" action="/productos/agregar" method="post" enctype="multipart/form-data">
-        <div class="columns">
-            <div class="column">
-                <div class="field">
-                    <label class="label" for="nombre">Nombre</label>
-                    <div class="control">
-                        <input class="input" placeholder="Sabritas" id="nombre" name="nombre" required />
-                    </div>
+    <div class="container py-8">
+        <form class="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg border border-gray-200" action="/productos/agregar" method="post" enctype="multipart/form-data">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6">Agregar Producto</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Nombre -->
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2" for="nombre">Nombre del Producto</label>
+                    <input class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Ej. Sabritas" id="nombre" name="nombre" required />
                 </div>
-            </div>
-            <div class="column is-fullwidth">
-                <label class="label" for="categoria">Categoría</label>
-                <div class="select is-fullwidth">
-                    <select id="categoria" name="categoria" required>
+
+                <!-- Categoría -->
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2" for="categoria">Categoría</label>
+                    <select id="categoria" name="categoria" class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
                         <option value="" selected disabled>Selecciona una categoría</option>
                         {% for categoria in categorias %}
                             <option value="{{ categoria.id }}">{{ categoria.nombre }}</option>
@@ -28,50 +29,87 @@
                     </select>
                 </div>
             </div>
-        </div>
-        <div class="columns">
-            <div class="column">
-                <label class="label" for="precio">Precio unitario</label>
-                <div class="field has-addons">
-                    <p class="control">
-                        <a class="button is-static">$</a>
-                    </p>
-                    <p class="control">
-                        <input class="input" type="number" placeholder="16.00" id="precio" name="precio" step=".01" required />
-                    </p>
-                    <p class="control">
-                        <a class="button is-static">MXN</a>
-                    </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                <!-- Precio -->
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2" for="precio">Precio Unitario</label>
+                    <div class="flex items-center space-x-2">
+                        <span class="text-gray-500">$</span>
+                        <input class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" type="number" placeholder="16.00" id="precio" name="precio" step=".01" required />
+                        <span class="text-gray-500">MXN</span>
+                    </div>
+                </div>
+
+                <!-- Cantidad en stock -->
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2" for="cantidad_en_stock">Cantidad en Stock</label>
+                    <div class="flex items-center space-x-2">
+                        <input class="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" type="number" placeholder="8" id="cantidad_en_stock" name="cantidad_en_stock" required />
+                        <span class="text-gray-500">unidades</span>
+                    </div>
                 </div>
             </div>
-            <div class="column">
-                <label class="label" for="cantidad_en_stock">Cantidad en stock</label>
-                <div class="field has-addons">
-                    <p class="control">
-                        <input class="input" type="number" placeholder="8" id="cantidad_en_stock" name="cantidad_en_stock" required />
-                    </p>
-                    <p class="control">
-                        <a class="button is-static">unidades</a>
-                    </p>
-                </div>
+
+    <!-- Imagen -->
+<div class="mt-6">
+    <label class="block text-gray-700 font-medium mb-2" for="imagen_producto">Imagen del Producto</label>
+    <div class="flex flex-col items-center bg-gray-100 p-4 rounded-md" style="max-width: 300px; margin: auto;">
+        <label class="cursor-pointer">
+            <input class="file-input hidden" type="file" name="imagen_producto" id="imagen_producto" accept="image/*" required />
+            <div id="mensaje_selecciona" class="text-center text-indigo-500 hover:text-indigo-600 transition-all duration-300">
+                <i class="fas fa-upload text-2xl mb-2"></i>
+                <span class="block">Selecciona una imagen</span>
             </div>
-        </div>
-        <div class="file is-boxed is-large is-centered">
-            <label class="file-label">
-              <input class="file-input" type="file" name="imagen_producto" id="imagen_producto" accept="image/*" required />
-              <img src="" alt="Imagen seleccionada" id="imagen_seleccionada">
-              <span class="file-cta">
-                <span class="file-icon">
-                    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M1 1H15V15H1V1ZM6 9L8 11L13 6V13H3V12L6 9ZM6.5 7C7.32843 7 8 6.32843 8 5.5C8 4.67157 7.32843 4 6.5 4C5.67157 4 5 4.67157 5 5.5C5 6.32843 5.67157 7 6.5 7Z" fill="currentColor"></path> </g></svg>
-                </span>
-                <span class="file-label">Imagen</span>
-              </span>
-            </label>
-        </div>
-        <button class="button is-primary">Agregar</button>
-  </form>
+        </label>
+        <img src="" alt="Imagen seleccionada" id="imagen_seleccionada" class="mt-4 max-w-full h-auto hidden rounded-md shadow-md" style="max-height: 200px; object-fit: contain;" />
+        <button id="eliminar_imagen" type="button" class="btn btn-danger mt-4 hidden">
+            Eliminar imagen
+        </button>
+    </div>
+</div>
+            <!-- Botón de Envío -->
+            <div class="mt-6 flex justify-center">
+                <button type="submit" class="btn btn-primary p-6 rounded-md shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    Agregar Producto
+                </button>
+            </div>
+        </form>
+    </div>
 {% endblock %}
 
 {% block javascript %}
 <script src="/javascript/agregarProducto.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const inputImagen = document.getElementById("imagen_producto");
+        const imagenSeleccionada = document.getElementById("imagen_seleccionada");
+        const mensajeSelecciona = document.getElementById("mensaje_selecciona");
+        const botonEliminar = document.getElementById("eliminar_imagen");
+
+        inputImagen.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    // Mostrar la imagen seleccionada
+                    imagenSeleccionada.src = e.target.result;
+                    imagenSeleccionada.classList.remove("hidden");
+                    mensajeSelecciona.style.display = "none";
+                    botonEliminar.classList.remove("hidden");
+                };
+                reader.readAsDataURL(file); // Leer el archivo seleccionado
+            }
+        });
+
+        botonEliminar.addEventListener("click", () => {
+            // Restablecer la imagen y ocultar elementos relacionados
+            inputImagen.value = "";
+            imagenSeleccionada.src = "";
+            imagenSeleccionada.classList.add("hidden");
+            mensajeSelecciona.style.display = "block";
+            botonEliminar.classList.add("hidden");
+        });
+    });
+</script>
 {% endblock %}
