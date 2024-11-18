@@ -46,7 +46,9 @@ async function actualizarProducto({
       precio_unitario: precio,
       cantidad_en_stock: cantidad_en_stock,
       url_imagen: url_imagen,
-      id_categoria: id_categoria,
+      categoria: {
+        _id: id_categoria,
+      },
     },
     { new: true }
   );

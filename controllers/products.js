@@ -91,10 +91,58 @@ router.get("/productos/:id/editar", async (req, res) => {
     return res.status(404).render("404.html");
   }
 
+  // se obtienen todas las categorias para mandarlas tambien
+  const categorias = await obtenerCategorias();
+
   res.render("editar_producto.html", {
     producto: producto,
+    categorias: categorias,
   });
 });
+
+// necesita ser post y no put porque los formularios solo soportan get y post
+router.post(
+  "/productos/:id/editar",
+  // se sube la imagen del producto
+  upload.single("imagen_producto"),
+  async (req, res) => {
+    const idProducto = req.params.id;
+
+    const {
+      nombre,
+      categoria: id_categoria,
+      precio,
+      cantidad_en_stock: stock,
+    } = req.body;
+
+    const producto = await encontrarProductoPorId(req.params.id);
+
+    // al editar un producto, subir una nueva imagen para el
+    // producto es opcional, por lo que hay que checar si se subio
+    // una imagen, si no es asi, se le asigna la imagen que ya tenia
+    let rutaImagen;
+    if (req.file) {
+      rutaImagen = `/images/productos/${req.file.filename}`;
+    } else {
+      rutaImagen = producto.url_imagen;
+    }
+
+    const productoActualizado = await actualizarProducto({
+      id_producto: producto._id,
+      nombre,
+      id_categoria,
+      precio: Number(precio),
+      cantidad_en_stock: Number(stock),
+      url_imagen: rutaImagen,
+    });
+
+    // para el toast
+    req.flash("tipoMensaje", "Editado");
+    req.flash("mensaje", "Producto actualizado exitosamente");
+
+    res.redirect(`/productos/`);
+  }
+);
 
 // para borrar un producto en especifico
 router.delete("/productos/:id", async (req, res) => {

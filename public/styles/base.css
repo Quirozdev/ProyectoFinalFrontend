@@ -9,7 +9,7 @@
 
 /* Fondo y tipografía por defecto */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
   background-color: #f9fafb;
   color: #333;
   line-height: 1.6;
@@ -140,4 +140,3 @@ button:hover {
     padding-right: 1rem;
   }
 }
-
